@@ -50,11 +50,13 @@ var service;
                     
                 })
             } else {
-                 infoWindow.setContent(browserHasGeolocation ?
+                  initialPosition = {lat: -34.397, lng: 150.655};
+                  setInitialPosition();
+                  infoWindow.setPosition(initialPosition);
+                  infoWindow.setContent(
                         'Error: The Geolocation service failed.' :
                         'Might we recommend you visit Los Angeles? We hear they have a lot of guacacmole!');
-                        initialPosition = {lat: -34.397, lng: 150.655};
-                        setInitialPosition();
+                        
                     }
             } 
 }   
