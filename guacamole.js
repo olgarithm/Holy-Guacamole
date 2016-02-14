@@ -42,7 +42,7 @@ var service;
         function setInitialPosition(){
             map = new google.maps.Map(document.getElementById('guac-map'), {
                 center: initialPosition,
-                zoom: 13
+                zoom: 15
             });
             
             var marker = new google.maps.Marker({
