@@ -7,6 +7,13 @@ var service;
         var lat;
         var lng;
         
+        infoWindow = new google.maps.InfoWindow();
+        
+         map = new google.maps.Map(document.getElementById('guac-map'), {
+            center: {lat: 33.6595557, lng: -8.804104},
+            zoom: 3
+         });
+        
         if(navigator.geolocation){
             navigator.geolocation.getCurrentPosition(
                 function(position){
@@ -20,15 +27,41 @@ var service;
                     
                     //creating the map with access
                     
+                    setInitialPosition();                    
+                    
+                })
+            } else {
+                    console.log("made it into there!");
+                    initialPosition = new google.maps.LatLng(-34.397, 150.655);
+                    infoWindow.setPosition(initialPosition);
+                    infoWindow.setContent(
+                        'Error: The Geolocation service failed. Might we recommend you visit Los Angeles? We hear they have a lot of guacacmole!');
                     setInitialPosition();
                     
-                    var request1 = {
+                        
+            }
+}    
+        
+        function setInitialPosition(){
+            map.setCenter(initialPosition);
+            map.setZoom(13);
+            
+            var marker = new google.maps.Marker({
+                map: map,
+                position: initialPosition,
+            })
+            
+            google.maps.event.addListener(marker, 'click', function(){
+                infoWindow.setContent("You are here!");
+                infoWindow.open(map, this);
+            });
+            
+            var request1 = {
                         location: initialPosition,
                         radius: 50000,
                         types: ['grocery_or_supermarket']
                     };
                     
-                    infoWindow = new google.maps.InfoWindow();
                     
                     var request2 = {
                         location: initialPosition,
@@ -46,34 +79,6 @@ var service;
                     service.nearbySearch(request1, callback);
                     service.radarSearch(request2, callback2);
                     service.radarSearch(request3, callback3);
-                    
-                    
-                })
-            } else {
-                  initialPosition = {lat: -34.397, lng: 150.655};
-                  setInitialPosition();
-                  infoWindow.setPosition(initialPosition);
-                  infoWindow.setContent(
-                        'Error: The Geolocation service failed. Might we recommend you visit Los Angeles? We hear they have a lot of guacacmole!');
-                        
-                    }
-            }    
-        
-        function setInitialPosition(){
-            map = new google.maps.Map(document.getElementById('guac-map'), {
-                center: initialPosition,
-                zoom: 13
-            })
-            
-            var marker = new google.maps.Marker({
-                map: map,
-                position: initialPosition,
-            })
-            
-            google.maps.event.addListener(marker, 'click', function(){
-                infoWindow.setContent("You are here!");
-                infoWindow.open(map, this);
-            });
         }
 
         function callback(results, status) {
