@@ -53,7 +53,14 @@ var service;
                     
                     
                 })
-            };   
+            } else {
+              map = new google.maps.Map(document.getElementById('guac-map'), {
+                        center: {
+                          lat: 34.0147744,
+                          lng: -118.3300583},
+                        zoom: 11
+                    })
+            } 
 }   
         
         function setInitialPosition(){
