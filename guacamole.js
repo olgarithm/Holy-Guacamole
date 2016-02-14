@@ -9,10 +9,7 @@ var service;
         
         infoWindow = new google.maps.InfoWindow();
         
-         map = new google.maps.Map(document.getElementById('guac-map'), {
-            center: {lat: 33.6595557, lng: -8.804104},
-            zoom: 3
-         });
+        
         
         if(navigator.geolocation){
             navigator.geolocation.getCurrentPosition(
@@ -43,8 +40,10 @@ var service;
 }    
         
         function setInitialPosition(){
-            map.setCenter(initialPosition);
-            map.setZoom(13);
+            map = new google.maps.Map(document.getElementById('guac-map'), {
+                center: initialPosition,
+                zoom: 13
+            });
             
             var marker = new google.maps.Marker({
                 map: map,
