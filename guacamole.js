@@ -54,12 +54,10 @@ var service;
                   setInitialPosition();
                   infoWindow.setPosition(initialPosition);
                   infoWindow.setContent(
-                        'Error: The Geolocation service failed.' :
-                        'Might we recommend you visit Los Angeles? We hear they have a lot of guacacmole!');
+                        'Error: The Geolocation service failed. Might we recommend you visit Los Angeles? We hear they have a lot of guacacmole!');
                         
                     }
-            } 
-}   
+            }    
         
         function setInitialPosition(){
             map = new google.maps.Map(document.getElementById('guac-map'), {
@@ -170,6 +168,4 @@ var service;
             });
           });
         }
-
-
 
