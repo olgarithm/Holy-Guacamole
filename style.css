@@ -1,1 +1,17 @@
-Style
+#guac-map {
+    margin-left:auto;
+    margin-right:auto;
+    width: 1400px;
+    height: 900px;
+}
+
+#title {
+    font-family: courier;
+    font-size: 150%       
+}
+
+#subtext{
+    font-size: 150%;
+    padding-bottom: 3%;
+}
+
