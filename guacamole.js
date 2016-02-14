@@ -19,12 +19,8 @@ var service;
                     initialPosition = new google.maps.LatLng(lat,lng);
                     
                     //creating the map with access
-                    map = new google.maps.Map(document.getElementById('guac-map'), {
-                        center: initialPosition,
-                        zoom: 13
-                    })
                     
-                    setInitialPosition(initialPosition);
+                    setInitialPosition();
                     
                     var request1 = {
                         location: initialPosition,
@@ -57,16 +53,21 @@ var service;
                  infoWindow.setContent(browserHasGeolocation ?
                         'Error: The Geolocation service failed.' :
                         'Might we recommend you visit Los Angeles? We hear they have a lot of guacacmole!');
-              map = new google.maps.Map(document.getElementById('guac-map'), {
-                        setInitialPosition({lat: -34.397, lng: 150.644});
+                        initialPosition = {lat: -34.397, lng: 150.655};
+                        setInitialPosition();
                     }
             } 
 }   
         
-        function setInitialPosition(position){
+        function setInitialPosition(){
+            map = new google.maps.Map(document.getElementById('guac-map'), {
+                center: initialPosition,
+                zoom: 13
+            })
+            
             var marker = new google.maps.Marker({
                 map: map,
-                position: position,
+                position: initialPosition,
             })
             
             google.maps.event.addListener(marker, 'click', function(){
