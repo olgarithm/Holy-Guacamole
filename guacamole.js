@@ -24,7 +24,7 @@ var service;
                         zoom: 13
                     })
                     
-                    setInitialPosition();
+                    setInitialPosition(initialPosition);
                     
                     var request1 = {
                         location: initialPosition,
@@ -44,7 +44,7 @@ var service;
                         location: initialPosition,
                         radius: 50000,
                         keyword: "qdoba"
-                    }
+                    };
                     
                     service = new google.maps.places.PlacesService(map);
                     service.nearbySearch(request1, callback);
@@ -54,19 +54,19 @@ var service;
                     
                 })
             } else {
+                 infoWindow.setContent(browserHasGeolocation ?
+                        'Error: The Geolocation service failed.' :
+                        'Might we recommend you visit Los Angeles? We hear they have a lot of guacacmole!');
               map = new google.maps.Map(document.getElementById('guac-map'), {
-                        center: {
-                          lat: 34.0147744,
-                          lng: -118.3300583},
-                        zoom: 11
-                    })
+                        setInitialPosition({lat: -34.397, lng: 150.644});
+                    }
             } 
 }   
         
-        function setInitialPosition(){
+        function setInitialPosition(position){
             var marker = new google.maps.Marker({
                 map: map,
-                position: initialPosition,
+                position: position,
             })
             
             google.maps.event.addListener(marker, 'click', function(){
