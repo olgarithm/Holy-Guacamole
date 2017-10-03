@@ -45,7 +45,7 @@ var service;
         var request1 = {
             location: initialPosition,
             radius: 50000,
-            types: ['grocery_or_supermarket']
+            query: 'grocery'
         };
 
         var request2 = {
@@ -62,8 +62,8 @@ var service;
 
         service = new google.maps.places.PlacesService(map);
         service.nearbySearch(request1, callback);
-        service.textSearch(request2, callback2);
-        service.textSearch(request3, callback3);
+        service.nearbySearch(request2, callback2);
+        service.nearbySearch(request3, callback3);
     }
 
     function callback(results, status) {
@@ -92,6 +92,7 @@ var service;
     }
 
     function callback2(results, status) {
+        console.log("found chipotle");
         if (status !== google.maps.places.PlacesServiceStatus.OK) {
             console.error(status);
             return;
@@ -99,11 +100,12 @@ var service;
       
         for (var i = 0; i < results.length; i++) {
             var place = results[i];
-              addMarker(place);
+            addMarker(place);
         }
     }
 
     function addMarker(place) {
+        console.log("found chipotle");
         var marker = new google.maps.Marker({
             map: map,
             position: place.geometry.location,
@@ -138,6 +140,7 @@ var service;
     }
 
     function addMarker2(place) {
+        console.log("found qdoba");
         var marker = new google.maps.Marker({
             map: map,
             position: place.geometry.location,
