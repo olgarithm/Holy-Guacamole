@@ -50,14 +50,14 @@ var service;
 
         var request2 = {
             location: initialPosition,
-            radius:50000,
-            keyword: 'chipotle'
+            radius: 50000,
+            query: 'chipotle'
         };
 
         var request3 = {
             location: initialPosition,
             radius: 50000,
-            keyword: 'qdoba'
+            query: 'qdoba'
         };
 
         service = new google.maps.places.PlacesService(map);
