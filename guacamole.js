@@ -61,9 +61,9 @@ var service;
         };
 
         service = new google.maps.places.PlacesService(map);
-        service.nearbySearch(request1, callback);
-        service.nearbySearch(request2, callback2);
-        service.nearbySearch(request3, callback3);
+        service.textSearch(request1, callback);
+        service.textSearch(request2, callback2);
+        service.textSearch(request3, callback3);
     }
 
     function callback(results, status) {
