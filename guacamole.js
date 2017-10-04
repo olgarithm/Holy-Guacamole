@@ -45,25 +45,27 @@ var service;
         var request1 = {
             location: initialPosition,
             radius: 50000,
-            query: 'grocery'
+            type: 'convenience_store'
         };
 
         var request2 = {
             location: initialPosition,
             radius: 50000,
-            query: 'chipotle'
+            type: 'restaurant',
+            name: 'chipotle'
         };
 
         var request3 = {
             location: initialPosition,
             radius: 50000,
-            query: 'qdoba'
+            type: 'restaurant',
+            name: 'qdoba'
         };
 
         service = new google.maps.places.PlacesService(map);
-        service.textSearch(request1, callback);
-        service.textSearch(request2, callback2);
-        service.textSearch(request3, callback3);
+        service.nearbySearch(request1, callback);
+        service.nearbySearch(request2, callback2);
+        service.nearbySearch(request3, callback3);
     }
 
     function callback(results, status) {
