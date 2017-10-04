@@ -6,10 +6,8 @@ var service;
     function initMap() {  
         var lat;
         var lng;
-        
         infoWindow = new google.maps.InfoWindow();
-        
-        
+
         if(navigator.geolocation){
             navigator.geolocation.getCurrentPosition(
                 function(position){
@@ -45,39 +43,45 @@ var service;
             });
             
             var request1 = {
-                        location: initialPosition,
-                        radius: 50000,
-                        type: ['convenience_store']
-                    };
-                    
-                    
-                    var request2 = {
-                        location: initialPosition,
-                        radius:50000,
-                        type: ['restaurant'],
-                        keyword: 'chipotle'
-                    };
+                location: initialPosition,
+                radius: 50000,
+                type: ['convenience_store'],
+                keyword: 'food'
+            };
+          
+            var request2 = {
+                location: initialPosition,
+                radius: 50000,
+                type: ['store'],
+                keyword: 'food'
+            }
+      
+            var request3 = {
+                location: initialPosition,
+                radius:50000,
+                type: ['restaurant'],
+                keyword: 'chipotle'
+            };
                         
-                    var request3 = {
-                        location: initialPosition,
-                        radius: 50000,
-                        type: ['restaurant'],
-                        keyword: 'qdoba'
-                    };
-                    
-                    service = new google.maps.places.PlacesService(map);
-                    service.nearbySearch(request1, callback);
-                    service.nearbySearch(request2, callback2);
-                    service.nearbySearch(request3, callback3);
+            var request4 = {
+                location: initialPosition,
+                radius: 50000,
+                type: ['restaurant'],
+                keyword: 'qdoba'
+            };
+
+            service = new google.maps.places.PlacesService(map);
+            service.nearbySearch(request1, callback);
+            service.nearbySearch(request2, callback);
+            service.nearbySearch(request3, callback2);
+            service.nearbySearch(request4, callback3);
         }
 
         function callback(results, status) {
           if (status == google.maps.places.PlacesServiceStatus.OK) {
             for (var i = 0; i < results.length; i++) {
-                console.log("we made it!!!");
                 var place = results[i];
                 createMarker(place);
-
             }
           }
         }
