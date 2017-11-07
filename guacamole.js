@@ -31,7 +31,7 @@ var service;
 	// If it finds a Chipotle, uses the Chipotle logo as a marker
 	// If it finds a Qdoba, uses the Qdoba logo as a marker
 	// If it finds a store/convenience store, uses a storefront icon as a marker
-	function setInitialPosition(){
+	function setInitialPosition() {
 		map = new google.maps.Map(document.getElementById('guac-map'), {
 			center: initialPosition,
 			zoom: 13
@@ -111,16 +111,16 @@ var service;
 
 	// Given a place and a type of location, creates the necessary marker type 
 	// and puts it on the map
-	function createMarker(place, type){
+	function createMarker(place, type) {
 		var marker = new google.maps.Marker({
 			map: map,
 			position: place.geometry.location,
-			if (type == "store" ) {
+			if (type === "store" ) {
 				icon:{
 					url: 'http://i63.tinypic.com/ilzxg8.png',
 					scaledSize: new google.maps.Size(45, 45)
 				}
-			} else if (type == "Chipotle") {
+			} else if (type === "Chipotle") {
 				icon: {
 					url: 'http://i67.tinypic.com/148iy54.jpg',
 					scaledSize: new google.maps.Size(45, 45)
