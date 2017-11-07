@@ -2,168 +2,144 @@ var initialPosition;
 var map;
 var infoWindow;
 var service;
-  
-    function initMap() {  
-        var lat;
-        var lng;
-        infoWindow = new google.maps.InfoWindow();
+	
+	// Initializes the map and sets the center of the map to the user's location (if geolocation succeeds)
+	// or Los Angeles (if geolocation fails)  
+	function initMap() {  
+		var lat;
+		var lng;
+		infoWindow = new google.maps.InfoWindow();
 
-        if(navigator.geolocation){
-            navigator.geolocation.getCurrentPosition(
-                function(position){
-                    lat = position.coords.latitude;
-                    lng = position.coords.longitude;
-                    initialPosition = new google.maps.LatLng(lat,lng);
-                    setInitialPosition();                    
-                })
-            } else {
-                    console.log("made it into there!");
-                    initialPosition = new google.maps.LatLng(-34.397, 150.655);
-                    infoWindow.setPosition(initialPosition);
-                    infoWindow.setContent(
-                        'Error: The Geolocation service failed. Might we recommend you visit Los Angeles? We hear they have a lot of guacacmole!');
-                    setInitialPosition();      
-            }
-        }    
-        
-        function setInitialPosition(){
-            map = new google.maps.Map(document.getElementById('guac-map'), {
-                center: initialPosition,
-                zoom: 13
-            });
-            
-            var marker = new google.maps.Marker({
-                map: map,
-                position: initialPosition,
-            })
-            
-            google.maps.event.addListener(marker, 'click', function(){
-                infoWindow.setContent("You are here!");
-                infoWindow.open(map, this);
-            });
-            
-            var request1 = {
-                location: initialPosition,
-                radius: 50000,
-                type: ['convenience_store'],
-                keyword: 'food'
-            };
-          
-            var request2 = {
-                location: initialPosition,
-                radius: 50000,
-                type: ['store'],
-                keyword: 'food'
-            }
-      
-            var request3 = {
-                location: initialPosition,
-                radius:50000,
-                type: ['restaurant'],
-                keyword: 'chipotle'
-            };
-                        
-            var request4 = {
-                location: initialPosition,
-                radius: 50000,
-                type: ['restaurant'],
-                keyword: 'qdoba'
-            };
+		if (navigator.geolocation){
+			navigator.geolocation.getCurrentPosition(
+				function(position){
+					lat = position.coords.latitude;
+					lng = position.coords.longitude;
+					initialPosition = new google.maps.LatLng(lat,lng);
+					setInitialPosition();                    
+				}
+			)
+		} else { // if geolocation fails
+			initialPosition = new google.maps.LatLng(-34.397, 150.655);
+			infoWindow.setPosition(initialPosition);
+			infoWindow.setContent('Error: The Geolocation service failed. Might we recommend you visit Los Angeles? We hear they have a lot of guacacmole!');
+			setInitialPosition();      
+		}
+	}    
+	
+	// Queries and sets up map markers
+	// If it finds a Chipotle, uses the Chipotle logo as a marker
+	// If it finds a Qdoba, uses the Qdoba logo as a marker
+	// If it finds a store/convenience store, uses a storefront icon as a marker
+	function setInitialPosition(){
+		map = new google.maps.Map(document.getElementById('guac-map'), {
+			center: initialPosition,
+			zoom: 13
+		});
+		
+		var marker = new google.maps.Marker({
+			map: map,
+			position: initialPosition,
+		})
+		
+		google.maps.event.addListener(marker, 'click', function(){
+			infoWindow.setContent("You are here!");
+			infoWindow.open(map, this);
+		});
+		
+		var store = {
+			location: initialPosition,
+			radius: 50000,
+			type: ['convenience_store'],
+			keyword: 'food'
+		};
+	 
+		var convenienceStore = {
+			location: initialPosition,
+			radius: 50000,
+			type: ['store'],
+			keyword: 'food'
+		}
 
-            service = new google.maps.places.PlacesService(map);
-            service.nearbySearch(request1, callback);
-            service.nearbySearch(request2, callback);
-            service.nearbySearch(request3, callback2);
-            service.nearbySearch(request4, callback3);
-        }
+		var chipotle = {
+			location: initialPosition,
+			radius:50000,
+			type: ['restaurant'],
+			keyword: 'chipotle'
+		};
+						
+		var qdoba = {
+			location: initialPosition,
+			radius: 50000,
+			type: ['restaurant'],
+			keyword: 'qdoba'
+		};
 
-        function callback(results, status) {
-          if (status == google.maps.places.PlacesServiceStatus.OK) {
-            for (var i = 0; i < results.length; i++) {
-                var place = results[i];
-                createMarker(place);
-            }
-          }
-        }
+		service = new google.maps.places.PlacesService(map);
+		service.nearbySearch(store, foundStore);
+		service.nearbySearch(convenienceStore, foundStore);
+		service.nearbySearch(chipotle, foundChipotle);
+		service.nearbySearch(qdoba, foundQdoba);
+	}
 
-        function createMarker(place){
-            var marker = new google.maps.Marker({
-                map: map,
-                position: place.geometry.location,
-                icon:{
-                    url: 'http://i63.tinypic.com/ilzxg8.png',
-                    scaledSize: new google.maps.Size(45, 45)
-                }
-                })
-            
-            google.maps.event.addListener(marker, 'click', function(){
-                infoWindow.setContent(place.name);
-                infoWindow.open(map, this);
-            });
-        }
+	// Places a storefront icon on store/convenience store locations
+	function foundStore(results, status) {
+		if (status == google.maps.places.PlacesServiceStatus.OK) {
+		  for (var i = 0; i < results.length; i++) {
+			 createMarker(results[i], "store");
+		  }
+		}
+	}
 
-        function callback2(results, status) {
-          if (status !== google.maps.places.PlacesServiceStatus.OK) {
-            console.error(status);
-            return;
-          }
-          for (var i = 0; i < results.length; i++) {
-            var place = results[i];
-              addMarker(place);
-          }
-        }
+	// Places a Chipotle logo for all the found Chipotle locations
+	function foundChipotle(results, status) {
+		if (status == google.maps.places.PlacesServiceStatus.OK) {
+			for (var i = 0; i < results.length; i++) {
+				createMarker(results[i], "Chipotle");
+			}
+		}
+	}
 
-        function addMarker(place) {
-          var marker = new google.maps.Marker({
-            map: map,
-            position: place.geometry.location,
-            icon: {
-              url: 'http://i67.tinypic.com/148iy54.jpg',
-              scaledSize: new google.maps.Size(45, 45)
-            }
-          });
+	// Places a Qdoba logo for all the found Qdoba locations
+	function foundQdoba(results, status) {
+		if (status !== google.maps.places.PlacesServiceStatus.OK) {
+			for (var i = 0; i < results.length; i++) {
+				addMarker2(results[i], "Qdoba");
+			}
+		}
+	}
 
-          google.maps.event.addListener(marker, 'click', function() {
-            service.getDetails(place, function(result, status) {
-              if (status !== google.maps.places.PlacesServiceStatus.OK) {
-                console.error(status);
-                return;
-              }
-              infoWindow.setContent(result.name);
-              infoWindow.open(map, marker);
-            });
-          });
-        }
-
-        function callback3(results, status) {
-          if (status !== google.maps.places.PlacesServiceStatus.OK) {
-            console.error(status);
-            return;
-          }
-          for (var i = 0; i < results.length; i++) {
-            var place = results[i];
-              addMarker2(place);
-          }
-        }
-
-        function addMarker2(place) {
-          var marker = new google.maps.Marker({
-            map: map,
-            position: place.geometry.location,
-            icon: {
-              url: 'http://i63.tinypic.com/35jayyc.png',
-              scaledSize: new google.maps.Size(50, 45)
-            }
-          });
-
-          google.maps.event.addListener(marker, 'click', function() {
-            service.getDetails(place, function(result, status) {
-              if (status !== google.maps.places.PlacesServiceStatus.OK) {
-                console.error(status);
-                return;
-              }
-              infoWindow.setContent(result.name);
-              infoWindow.open(map, marker);
-            });
-          });
-        }
+	// Given a place and a type of location, creates the necessary marker type 
+	// and puts it on the map
+	function createMarker(place, type){
+		var marker = new google.maps.Marker({
+			map: map,
+			position: place.geometry.location,
+			if (type == "store" ) {
+				icon:{
+					url: 'http://i63.tinypic.com/ilzxg8.png',
+					scaledSize: new google.maps.Size(45, 45)
+				}
+			} else if (type == "Chipotle") {
+				icon: {
+					url: 'http://i67.tinypic.com/148iy54.jpg',
+					scaledSize: new google.maps.Size(45, 45)
+				}
+			} else {
+				icon: {
+				url: 'http://i63.tinypic.com/35jayyc.png',
+				scaledSize: new google.maps.Size(50, 45)
+			}
+		})
+		
+		google.maps.event.addListener(marker, 'click', function() {
+			service.getDetails(place, function(result, status) {
+			if (status !== google.maps.places.PlacesServiceStatus.OK) {
+				console.error(status);
+				return;
+			}
+			infoWindow.setContent(result.name);
+			infoWindow.open(map, marker);
+			});
+		});
+	}
