@@ -112,23 +112,20 @@ var service;
 	// Given a place and a type of location, creates the necessary marker type 
 	// and puts it on the map
 	function createMarker(place, type) {
+		var image;
+		if ("store" === type) {
+			image = 'http://i63.tinypic.com/ilzxg8.png'
+		} else if ("Chipotle" === type) {
+			image = 'http://i67.tinypic.com/148iy54.jpg'
+		} else {
+			image = 'http://i63.tinypic.com/35jayyc.png'
+		}
 		var marker = new google.maps.Marker({
 			map: map,
 			position: place.geometry.location,
-			if (type === "store" ) {
-				icon:{
-					url: 'http://i63.tinypic.com/ilzxg8.png',
-					scaledSize: new google.maps.Size(45, 45)
-				}
-			} else if (type === "Chipotle") {
-				icon: {
-					url: 'http://i67.tinypic.com/148iy54.jpg',
-					scaledSize: new google.maps.Size(45, 45)
-				}
-			} else {
-				icon: {
-				url: 'http://i63.tinypic.com/35jayyc.png',
-				scaledSize: new google.maps.Size(50, 45)
+			icon: {
+				url: image,
+				scaledSize: new google.maps.Size(45, 45)
 			}
 		})
 		
