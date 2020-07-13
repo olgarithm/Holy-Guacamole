@@ -1,13 +1,19 @@
-var initialPosition;
-var map;
-var infoWindow;
-var service;
+"use strict";
+
+(function() {
+
+	window.addEventListener("load", initMap);
+
+	let initialPosition;
+	let map;
+	let infoWindow;
+	let service;
 	
 	// Initializes the map and sets the center of the map to the user's location (if geolocation succeeds)
 	// or Los Angeles (if geolocation fails)  
 	function initMap() {  
-		var lat;
-		var lng;
+		let lat;
+		let lng;
 		infoWindow = new google.maps.InfoWindow();
 
 		if (navigator.geolocation){
@@ -37,7 +43,7 @@ var service;
 			zoom: 13
 		});
 		
-		var marker = new google.maps.Marker({
+		let marker = new google.maps.Marker({
 			map: map,
 			position: initialPosition,
 		})
@@ -47,28 +53,28 @@ var service;
 			infoWindow.open(map, this);
 		});
 		
-		var store = {
+		let store = {
 			location: initialPosition,
 			radius: 50000,
 			type: ['convenience_store'],
 			keyword: 'food'
 		};
 	 
-		var convenienceStore = {
+		let convenienceStore = {
 			location: initialPosition,
 			radius: 50000,
 			type: ['store'],
 			keyword: 'food'
 		}
 
-		var chipotle = {
+		let chipotle = {
 			location: initialPosition,
 			radius:50000,
 			type: ['restaurant'],
 			keyword: 'chipotle'
 		};
 						
-		var qdoba = {
+		let qdoba = {
 			location: initialPosition,
 			radius: 50000,
 			type: ['restaurant'],
@@ -85,7 +91,7 @@ var service;
 	// Places a storefront icon on store/convenience store locations
 	function foundStore(results, status) {
 		if (status == google.maps.places.PlacesServiceStatus.OK) {
-		  for (var i = 0; i < results.length; i++) {
+		  for (let i = 0; i < results.length; i++) {
 			 createMarker(results[i], "store");
 		  }
 		}
@@ -94,7 +100,7 @@ var service;
 	// Places a Chipotle logo for all the found Chipotle locations
 	function foundChipotle(results, status) {
 		if (status == google.maps.places.PlacesServiceStatus.OK) {
-			for (var i = 0; i < results.length; i++) {
+			for (let i = 0; i < results.length; i++) {
 				createMarker(results[i], "Chipotle");
 			}
 		}
@@ -103,7 +109,7 @@ var service;
 	// Places a Qdoba logo for all the found Qdoba locations
 	function foundQdoba(results, status) {
 		if (status !== google.maps.places.PlacesServiceStatus.OK) {
-			for (var i = 0; i < results.length; i++) {
+			for (let i = 0; i < results.length; i++) {
 				addMarker2(results[i], "Qdoba");
 			}
 		}
@@ -112,15 +118,15 @@ var service;
 	// Given a place and a type of location, creates the necessary marker type 
 	// and puts it on the map
 	function createMarker(place, type) {
-		var image;
+		let image;
 		if ("store" === type) {
-			image = 'http://i63.tinypic.com/ilzxg8.png'
+			image = 'https://www.iconarchive.com/download/i103468/paomedia/small-n-flat/shop.ico'
 		} else if ("Chipotle" === type) {
-			image = 'http://i67.tinypic.com/148iy54.jpg'
+			image = 'https://cdn.iconscout.com/icon/free/png-512/chipotle-283337.png'
 		} else {
-			image = 'http://i63.tinypic.com/35jayyc.png'
+			image = 'https://brandslogo.net/wp-content/uploads/2013/04/qdoba-mexican-grill-vector-logo.png'
 		}
-		var marker = new google.maps.Marker({
+		let marker = new google.maps.Marker({
 			map: map,
 			position: place.geometry.location,
 			icon: {
@@ -140,3 +146,4 @@ var service;
 			});
 		});
 	}
+})();
